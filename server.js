@@ -15,6 +15,7 @@ mongoose
 
 app.use('/api/categories', require('./routes/categoryRoutes'));
 app.use('/api/expenses', require('./routes/expenseRoutes'));
+app.use('/api/seed', require('./routes/seed'));
 
 const PORT = 5010;
 app.listen(PORT, '0.0.0.0', () =>
