@@ -1,28 +1,51 @@
-const express = require('express');
+import express from "express";
+import Expense from "../models/Expense.js";
+
 const router = express.Router();
-const Expense = require('../models/Expense');
 
-// Save expense
-router.post('/', async (req, res) => {
-    const { category, subCat, amount } = req.body;
+/**
+ * POST /api/expenses
+ * Add new expense
+ */
+router.post("/", async (req, res) => {
+  try {
+    const { amount, category, group, subCategory, note, date } = req.body;
 
-    try {
-        const expense = new Expense({ category, subCat, amount });
-        await expense.save();
-        res.status(201).json(expense);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+    if (!amount || !category || !group || !subCategory) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
+
+    const expense = new Expense({
+      amount,
+      category,
+      group,
+      subCategory,
+      note,
+      date
+    });
+
+    await expense.save();
+
+    res.status(201).json({
+      message: "Expense added successfully",
+      expense
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// Get all expenses
-router.get('/', async (req, res) => {
-    try {
-        const expenses = await Expense.find().sort({ createdAt: -1 });
-        res.json(expenses);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+/**
+ * GET /api/expenses
+ * Fetch all expenses
+ */
+router.get("/", async (req, res) => {
+  try {
+    const expenses = await Expense.find().sort({ date: -1 });
+    res.json(expenses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-module.exports = router;
+export default router;
