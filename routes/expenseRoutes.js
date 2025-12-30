@@ -1,7 +1,8 @@
-import express from "express";
+const express = require('express');
+const router = express.Router();
 import Expense from "../models/Expense.js";
 
-const router = express.Router();
+
 
 /**
  * POST /api/expenses
