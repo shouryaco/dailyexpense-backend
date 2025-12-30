@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-import Expense from "../models/Expense.js";
+const Expense = require('../models/Expense');
 
 
 
