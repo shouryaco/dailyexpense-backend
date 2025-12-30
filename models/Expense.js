@@ -1,13 +1,33 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-const expenseSchema = new mongoose.Schema(
+const ExpenseSchema = new mongoose.Schema(
   {
-    category: { type: String, required: true },
-    group: { type: String, required: true },
-    item: { type: String, required: true },
-    amount: { type: Number, required: true },
+    category: {
+      type: String,
+      required: true,
+    },
+    group: {
+      type: String,
+      required: true,
+    },
+    subCategory: {
+      type: String,
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    note: {
+      type: String,
+      default: "",
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Expense', expenseSchema);
+export default mongoose.model("Expense", ExpenseSchema);
