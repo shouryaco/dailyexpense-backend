@@ -9,10 +9,20 @@ const router = express.Router();
  */
 router.post("/", async (req, res) => {
   try {
-    const { amount, category, group, subCategory, note, date } = req.body;
+    const {
+      amount,
+      category,
+      group,
+      subCategory,
+      note,
+      date
+    } = req.body;
 
+    // Validation
     if (!amount || !category || !group || !subCategory) {
-      return res.status(400).json({ message: "Missing required fields" });
+      return res.status(400).json({
+        message: "Missing required fields"
+      });
     }
 
     const expense = new Expense({
@@ -20,8 +30,8 @@ router.post("/", async (req, res) => {
       category,
       group,
       subCategory,
-      note,
-      date
+      note: note || "",
+      date: date || new Date()
     });
 
     await expense.save();
@@ -31,7 +41,10 @@ router.post("/", async (req, res) => {
       expense
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error adding expense:", error);
+    res.status(500).json({
+      message: "Failed to add expense"
+    });
   }
 });
 
@@ -44,7 +57,10 @@ router.get("/", async (req, res) => {
     const expenses = await Expense.find().sort({ date: -1 });
     res.json(expenses);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error fetching expenses:", error);
+    res.status(500).json({
+      message: "Failed to fetch expenses"
+    });
   }
 });
 
